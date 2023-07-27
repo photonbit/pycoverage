@@ -15,6 +15,10 @@ Optionally can commit the coverage badge into the branch.
 - [`pytest`](https://pypi.org/project/pytest/)
 - [`coverage`](https://pypi.org/project/coverage/)
 
+### Optional Python Packages Used
+
+- [`pyGitHub`](https://pypi.org/project/PyGithub/)
+
 ## Optional Inputs
 
 - `requirements-file`
@@ -62,12 +66,22 @@ Optionally can commit the coverage badge into the branch.
 - `commit_badge`
   - Boolean to either make a commit on the coverage badge or not
 
+- `save_artifact`
+  - Boolean to either save the coverage report as an artifact or not
+
+- `compare_branch`
+  - Boolean to enable an incremental coverage comparison with the base branch of a PR
+
 ## Template workflow file
 
 ```yaml
 name: pycoverage workflow
 
 on: [pull_request]
+
+permissions:
+  contents: read
+  actions: read
 
 jobs:
   tests:
@@ -92,12 +106,24 @@ jobs:
           github_token: ${{ secrets.github_token }}
           working_branch: ${{ steps.extract_branch.outputs.branch }}
 ```
-Add the badge to your README.md
+
+### Permissions
+
+You only need to specify the permissions if you have the `compare_branch` option enabled.
+```yaml
+permissions:
+  contents: read
+  actions: read
+```
+
+## Badge
+
+To add a badge on your repository, add the following line to your README.md:
 
     <!-- README.md -->
     + [![cov](https://<you>.github.io/<repo>/badges/coverage.svg)](https://github.com/<you>/<repo>/actions)
 
-Replace the `<you>` and `<repo>` above, like:
+Replace the `<you>` and `<repo>` above.
 
 If you feel generous and want to show some extra appreciation:
 
